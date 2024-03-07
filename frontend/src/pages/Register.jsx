@@ -2,31 +2,38 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [location, setLocation] = useState("");
   const [role, setRole] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if email, password, and role are provided
-    if (email.trim() === "" || password.trim() === "" || role.trim() === "") {
-      toast.error("Email, password, and role are required");
-      return;
+    try {
+      // Make a POST request to the registration endpoint
+      const response = await axios.post("http://localhost:8080/auth/register", {
+        name,
+        email,
+        password,
+        location,
+        role,
+      });
+
+      if (response.status === 200) {
+        toast.success("Registration successful!"); // Show success message
+      } else {
+        toast.error("Registration failed. Please try again."); // Show error message
+      }
+    } catch (error) {
+      console.error("Error occurred:", error.message);
+      toast.error("Registration failed. Please try again later."); // Show error message
     }
-
-    // If all validations pass, proceed with registration functionality
-    // For demonstration, let's assume registration is successful
-    toast.success("Registration successful!");
   };
-
-  // Function to validate email format
-  // const validateEmail = (email) => {
-  //   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   return re.test(email);
-  // };
 
   return (
     <div className="register-container">
@@ -34,13 +41,13 @@ const Register = () => {
         <h2 className="register-heading">Register</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-field">
-            <label htmlFor="email">Name</label>
+            <label htmlFor="name">Name</label>
             <input
-              id="email"
+              id="name"
               type="text"
               placeholder="Enter your name"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="input-field"
             />
           </div>
@@ -67,13 +74,13 @@ const Register = () => {
             />
           </div>
           <div className="input-field">
-            <label htmlFor="password">Location</label>
+            <label htmlFor="location">Location</label>
             <input
-              id="password"
+              id="location"
               type="text"
               placeholder="Enter your location"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               className="input-field"
             />
           </div>
@@ -104,7 +111,7 @@ const Register = () => {
               </label>
             </div>
           </div>
-          <NavLink to={"/login"}>Already Register ? Login</NavLink>
+          <NavLink to={"/login"}>Already Registered? Login</NavLink>
           <button type="submit" className="submit-button">
             Register
           </button>

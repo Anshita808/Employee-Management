@@ -2,46 +2,34 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NavLink } from "react-router-dom";
+import axios from "axios"; // Import Axios
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if email is empty
-    if (email.trim() === "") {
-      toast.error("Email is required");
-      return;
+    try {
+      // Make a POST request to the login endpoint
+      const response = await axios.post("http://localhost:8080/auth/login", {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        // Store token in local storage
+        localStorage.setItem("token", response.data.token);
+        // Redirect to home page or perform any other action on successful login
+        toast.success("Login successful!"); // Show success message
+      } else {
+        toast.error("Login failed. Please check your credentials."); // Show error message
+      }
+    } catch (error) {
+      console.error("Error occurred:", error.message);
+      toast.error("Login failed. Please try again later."); // Show error message
     }
-
-    // Check if email is in correct format
-    if (!validateEmail(email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
-
-    // Check if password is empty
-    if (password.trim() === "") {
-      toast.error("Password is required");
-      return;
-    }
-
-    // Check if password is incorrect (for demonstration purposes)
-    if (password !== "password") {
-      toast.error("Incorrect password");
-      return;
-    }
-
-    // If all validations pass, proceed with login functionality
-    // For demonstration, let's assume login is successful
-    toast.success("Login successful!");
-  };
-
-  // Function to validate email format
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
   };
 
   return (
