@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
     enum: ["manager", "employee"],
     default: "employee",
   },
+  department: { type: mongoose.Schema.Types.ObjectId, ref: "Department" },
 });
 
 const EmployModel = mongoose.model("employee", userSchema);

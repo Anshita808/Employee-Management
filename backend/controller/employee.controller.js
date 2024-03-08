@@ -46,7 +46,97 @@ const login = async (req, res) => {
   } catch (error) {}
 };
 
+const getAllEmployee = async (req, res) => {
+  try {
+    const getEmployee = await EmployModel.find();
+
+    if (getEmployee.length === 0)
+      return res.status(403).send({ msg: "No Employ Found" });
+    res.status(200).send({ msg: "All Employee", getEmployee });
+  } catch (error) {
+    res.status(200).send(error.message);
+  }
+};
+
+
+const updateEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedEmployee = await EmployModel.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedEmployee) {
+      return res.status(404).send({ msg: "Employee not found" });
+    }
+
+    res
+      .status(200)
+      .send({ msg: "Employee updated", employee: updatedEmployee });
+  } catch (error) {
+    res.status(500).send({ msg: error.message });
+  }
+};
+
+const deleteEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedEmployee = await EmployModel.findByIdAndDelete(id);
+
+    if (!deletedEmployee) {
+      return res.status(404).send({ msg: "Employee not found" });
+    }
+
+    res.status(200).send({ msg: "Employee deleted" });
+  } catch (error) {
+    res.status(500).send({ msg: error.message });
+  }
+};
+
+const filterEmployees = async (req, res) => {
+  try {
+    const { location, sort } = req.query;
+
+    // Build query based on filters
+    let query = {};
+
+    if (location) {
+      query.location = location;
+    }
+
+    // Build sorting options
+    let sortOption = {};
+    if (sort) {
+      if (sort === "asc") {
+        sortOption.name = 1;
+      } else if (sort === "desc") {
+        sortOption.name = -1;
+      }
+    }
+
+    // Find employees based on query and sort options
+    const employees = await EmployModel.find(query).sort(sortOption);
+
+    if (employees.length === 0) {
+      return res
+        .status(404)
+        .send({ msg: "No employees found matching the criteria" });
+    }
+
+    res.status(200).send({ msg: "Filtered employees", employees });
+  } catch (error) {
+    res.status(500).send({ msg: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
+  getAllEmployee,
+  updateEmployee,
+  deleteEmployee,
+  filterEmployees,
 };

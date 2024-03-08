@@ -1,34 +1,36 @@
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NavLink } from "react-router-dom";
-import axios from "axios"; // Import Axios
+import { NavLink, useNavigate } from "react-router-dom"; // Import useNavigate hook
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Make a POST request to the login endpoint
       const response = await axios.post("http://localhost:8080/auth/login", {
         email,
         password,
       });
 
       if (response.status === 200) {
-        // Store token in local storage
         localStorage.setItem("token", response.data.token);
-        // Redirect to home page or perform any other action on successful login
-        toast.success("Login successful!"); // Show success message
+        localStorage.setItem("role", response.data.isUserExists.role);
+        toast.success("Login successful!");
+
+        // Navigate to home page after successful login
+        navigate("/");
       } else {
-        toast.error("Login failed. Please check your credentials."); // Show error message
+        toast.error("Login failed. Please check your credentials.");
       }
     } catch (error) {
       console.error("Error occurred:", error.message);
-      toast.error("Login failed. Please try again later."); // Show error message
+      toast.error("Login failed. Please try again later.");
     }
   };
 
