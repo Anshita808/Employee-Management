@@ -122,7 +122,7 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
                   employee.role
                 )}
               </td>
-              <td>{employee.department.name}</td>
+              <td>{employee?.department?employee.department.name : "Unassigned"}</td>
               <td>
                 {isEditing[employee._id] ? (
                   <input

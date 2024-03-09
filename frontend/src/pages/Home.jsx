@@ -28,6 +28,7 @@ function Home() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         setEmployees(data.employees);
         setFilteredEmployees(data.employees); // Initially set filtered employees to all employees
       } else {
