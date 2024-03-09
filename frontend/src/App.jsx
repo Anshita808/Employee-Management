@@ -5,20 +5,21 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 
 function App() {
+  // Check if the user is authenticated based on token presence
+  
+
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-
+        <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={ <Home />}
+          />
           
-          <Route path="/login" element={<Login />} />
-
-         
           <Route path="/register" element={<Register />} />
-
-         
-          <Route path="" element={<Navigate to="/" replace />} />
+          {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,83 +1,61 @@
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #f0f0f0;
-}
+/* NewLoginStyles.css */
 
-.login-form {
+/* Common styles for forms */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.form-container {
   max-width: 400px;
   width: 100%;
-  padding: 20px;
-  border: 1px solid #ccc;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background: #fff;
-  overflow: hidden;
+  background-color: #fff; /* White background */
 }
 
-.login-heading {
+.form-title {
   text-align: center;
   margin-bottom: 20px;
-  color: #007bff;
+  color: #007bff; /* Blue title color */
 }
 
-.input-field {
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555; /* Dark gray label color */
+}
+
+.form-field input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ccc; /* Light gray border */
   border-radius: 5px;
   box-sizing: border-box;
   outline: none;
 }
 
-.submit-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.form-field input:focus {
+  border-color: #007bff; /* Blue border color on focus */
 }
 
-/* /Register / */
-
-.register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f0f0;
-}
-
-.register-form {
-  max-width: 400px;
-  width: 100%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-}
-
-.register-heading {
+.form-link {
+  display: block;
   text-align: center;
+  color: #007bff; /* Blue link color */
   margin-bottom: 20px;
-  color: #007bff;
-}
-
-.input-field {
-  margin-bottom: 15px;
 }
 
 .submit-button {
-  width: 100%;
+  width: 25%;
   padding: 10px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #007bff; /* Blue button background */
+  color: #fff; /* White text color */
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -85,37 +63,153 @@
 }
 
 .submit-button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Darker blue background color on hover */
 }
 
-/* / Styling for radio buttons */
-input[type="radio"] {
+/* Login form styles */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9f9; /* Light gray background */
+}
+
+.login-box {
+  margin-top: 50px;
+}
+
+/* Register form styles */
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0; /* Light gray background */
+}
+
+.register-box {
+  max-width: 400px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* White background */
+}
+
+.form-field.radio-field {
+  display: flex;
+  align-items: center;
+}
+
+.radio-container input[type="radio"] {
+  display: none;
+}
+
+.radio-container label {
+  display: inline-block;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.radio-container label:before {
+  content: "";
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #007bff; /* Blue border */
+  border-radius: 50%;
   margin-right: 5px;
+  vertical-align: middle;
 }
 
-/* Create Department */
+.radio-container input[type="radio"]:checked + label:before {
+  background-color: #007bff; /* Blue color when checked */
+}
+
+
+
+
+
+/* CreateDepartment.css */
+
+.create-department-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 40px 0; /* Add top and bottom margins */
+}
+
+.input-field {
+  width: 30%;
+  padding: 10px;
+  margin-top: 15px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.submit-button {
+  width: 18%;
+  padding: 10px;
+  background-color: #007bff; /* Light blue background color */
+  color: #fff; /* White text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px; /* Add bottom margin for spacing */
+}
+
+
+.submit-button:hover {
+  background-color: #0056b3; /* Darker blue background color on hover */
+}
 
 .departments-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .department-card {
-  background-color: #f0f0f0;
+  background-color: #f0f0f0; /* Light gray background color */
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
-  width: 200px;
+  width: 300px;
+}
+
+.department-card p {
+  margin: 0;
 }
 
 .buttons {
+  display: flex;
+  justify-content: space-between;
   margin-top: 10px;
 }
 
 .buttons button {
+  flex-grow: 1;
+  margin: 0 5px;
+}
+
+.buttons button:first-child {
   margin-right: 5px;
 }
+
+.buttons button:last-child {
+  margin-left: 5px;
+}
+
+
 
 /* EmployeeList.css */
 
@@ -125,6 +219,7 @@ input[type="radio"] {
   border-radius: 5px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
 }
 
 .employee-list h2 {
@@ -175,36 +270,96 @@ button:hover {
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: #f0f8ff; /* Light blue background color */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .employee-filter h2 {
   margin-bottom: 10px;
+  color: #007bff; /* Dark blue heading color */
 }
 
 .filter-options {
   display: flex;
   align-items: center;
+ 
+  flex-wrap: wrap; /* Allow items to wrap */
 }
 
 .filter-options label {
   margin-right: 10px;
+  color: #007bff; /* Dark blue label color */
+  margin-bottom: 10px; /* Add bottom margin for spacing */
 }
 
 .filter-options select {
   padding: 8px;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #fff;
+  border: 1px solid #ccc; /* Light gray border */
+  background-color: #fff; /* White background color */
+  color: #007bff; /* Dark blue text color */
   transition: border-color 0.3s ease;
+  margin-bottom: 10px; /* Add bottom margin for spacing */
 }
 
-.filter-options select:hover {
-  border-color: #aaa;
+/* Adjust width if needed */
+.employee-filter .filter-options select {
+  width: 200px; /* Adjust width as needed */
 }
 
-.filter-options select:focus {
-  outline: none;
-  border-color: #007bff;
+.filter-options input[type="text"] {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc; /* Light gray border */
+  margin-bottom: 10px; /* Add bottom margin for spacing */
 }
+
+
+/* Navbar.css */
+
+.navbar {
+  background-color: #007bff; /* Blue background color */
+  color: #fff; /* White text color */
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo h1 {
+  margin: 0;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.nav-item {
+  margin-right: 20px;
+}
+
+.nav-item a {
+  text-decoration: none;
+  color: #fff; /* White text color */
+}
+
+.nav-item a:hover {
+  color: #fff; /* White text color on hover */
+  background-color: #0056b3; /* Darker blue background color on hover */
+}
+
+

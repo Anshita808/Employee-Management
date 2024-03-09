@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -15,8 +16,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      // Make a POST request to the registration endpoint
-      const response = await axios.post("http://localhost:8080/auth/register", {
+      const response = await axios.post(`${BASEURL}/auth/register`, {
         name,
         email,
         password,
@@ -37,10 +37,10 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <div className="register-form">
-        <h2 className="register-heading">Register</h2>
+      <div className="register-box form-container">
+        <h2 className="form-title">Register</h2>
         <form onSubmit={handleSubmit}>
-          <div className="input-field">
+          <div className="form-field">
             <label htmlFor="name">Name</label>
             <input
               id="name"
@@ -48,10 +48,9 @@ const Register = () => {
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="input-field"
             />
           </div>
-          <div className="input-field">
+          <div className="form-field">
             <label htmlFor="email">Email</label>
             <input
               id="email"
@@ -59,10 +58,9 @@ const Register = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input-field"
             />
           </div>
-          <div className="input-field">
+          <div className="form-field">
             <label htmlFor="password">Password</label>
             <input
               id="password"
@@ -70,10 +68,9 @@ const Register = () => {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
             />
           </div>
-          <div className="input-field">
+          <div className="form-field">
             <label htmlFor="location">Location</label>
             <input
               id="location"
@@ -81,10 +78,9 @@ const Register = () => {
               placeholder="Enter your location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="input-field"
             />
           </div>
-          <div className="input-field">
+          <div className="form-field">
             <label>Role</label>
             <div className="radio-container">
               <input
@@ -111,7 +107,9 @@ const Register = () => {
               </label>
             </div>
           </div>
-          <NavLink to={"/login"}>Already Registered? Login</NavLink>
+          <NavLink to={"/login"} className="form-link">
+            Already Registered? Login
+          </NavLink>
           <button type="submit" className="submit-button">
             Register
           </button>

@@ -29,7 +29,7 @@ function EmployeeFilter({ employees, onFilter }) {
           <option value="">All Locations</option>
           {/* Assuming locations are dynamically populated */}
           {employees.map((employee) => (
-            <option key={employee.id} value={employee.location}>
+            <option key={employee._id} value={employee.location}>
               {employee.location}
             </option>
           ))}

@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const register = async (req, res) => {
   try {
-    const { name, email, password,location, role } = req.body;
+    const { name, email, password, location, role } = req.body;
 
     const isUserPresent = await EmployModel.findOne({ email });
 
@@ -14,7 +14,13 @@ const register = async (req, res) => {
 
     const hashPass = await bcrypt.hash(password, 10);
 
-    const newEmp = new EmployModel({ name, email, password: hashPass,location, role });
+    const newEmp = new EmployModel({
+      name,
+      email,
+      password: hashPass,
+      location,
+      role,
+    });
 
     await newEmp.save();
 
@@ -46,27 +52,21 @@ const login = async (req, res) => {
   } catch (error) {}
 };
 
-const getAllEmployee = async (req, res) => {
+const getAllEmployees = async (req, res) => {
   try {
-    const getEmployee = await EmployModel.find();
-
-    if (getEmployee.length === 0)
-      return res.status(403).send({ msg: "No Employ Found" });
-    res.status(200).send({ msg: "All Employee", getEmployee });
+    const employees = await EmployModel.find().populate("department");
+    res.status(200).send({ employees });
   } catch (error) {
-    res.status(200).send(error.message);
+    res.status(500).send({ msg: error.message });
   }
 };
-
 
 const updateEmployee = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedEmployee = await EmployModel.findByIdAndUpdate(
-      id,
-      req.body,
-      { new: true }
-    );
+    const updatedEmployee = await EmployModel.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
 
     if (!updatedEmployee) {
       return res.status(404).send({ msg: "Employee not found" });
@@ -111,9 +111,9 @@ const filterEmployees = async (req, res) => {
     let sortOption = {};
     if (sort) {
       if (sort === "asc") {
-        sortOption.name = 1;
+        sortOption.name = 1; // Ascending order
       } else if (sort === "desc") {
-        sortOption.name = -1;
+        sortOption.name = -1; // Descending order
       }
     }
 
@@ -135,7 +135,7 @@ const filterEmployees = async (req, res) => {
 module.exports = {
   register,
   login,
-  getAllEmployee,
+  getAllEmployees,
   updateEmployee,
   deleteEmployee,
   filterEmployees,

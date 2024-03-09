@@ -1,19 +1,21 @@
+// Login.js
 import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NavLink, useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", {
+      const response = await axios.post(`${BASEURL}/auth/login`, {
         email,
         password,
       });
@@ -23,7 +25,6 @@ const Login = () => {
         localStorage.setItem("role", response.data.isUserExists.role);
         toast.success("Login successful!");
 
-        // Navigate to home page after successful login
         navigate("/");
       } else {
         toast.error("Login failed. Please check your credentials.");
@@ -36,10 +37,10 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="login-form">
-        <h2 className="login-heading">Login</h2>
+      <div className="login-box form-container">
+        <h2 className="form-title">Login</h2>
         <form onSubmit={handleSubmit}>
-          <div className="input-field">
+          <div className="form-field">
             <label htmlFor="email">Email</label>
             <input
               id="email"
@@ -47,10 +48,9 @@ const Login = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input-field"
             />
           </div>
-          <div className="input-field">
+          <div className="form-field">
             <label htmlFor="password">Password</label>
             <input
               id="password"
@@ -58,10 +58,11 @@ const Login = () => {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
             />
           </div>
-          <NavLink to="/register">Don't have an account ? Register</NavLink>
+          <NavLink to="/register" className="form-link">
+            Don't have an account? Register
+          </NavLink>
           <button type="submit" className="submit-button">
             Login
           </button>

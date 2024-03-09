@@ -1,54 +1,77 @@
-import React, { useState } from "react";
+// Home.jsx
+import React, { useState, useEffect } from "react";
 import CreateDepartment from "../components/CreateDepartment";
 import EmployeeFilter from "./EmployeeFilter";
 import EmployeeList from "./EmployeeList";
-
-const employees = [
-  { id: 1, name: "John Doe", location: "New York" },
-  { id: 2, name: "Jane Smith", location: "Los Angeles" },
-  { id: 3, name: "Alice Johnson", location: "Chicago" },
-  { id: 4, name: "Bob Williams", location: "San Francisco" },
-  { id: 5, name: "Emily Brown", location: "Miami" },
-  { id: 6, name: "Michael Davis", location: "Seattle" },
-  { id: 7, name: "Olivia Wilson", location: "Boston" },
-  { id: 8, name: "William Rodriguez", location: "Houston" },
-  { id: 9, name: "Sophia Martinez", location: "Philadelphia" },
-  { id: 10, name: "David Lopez", location: "Phoenix" },
-  { id: 11, name: "Emma Lee", location: "Denver" },
-  { id: 12, name: "James Taylor", location: "Austin" },
-  // Add more employee objects as needed
-];
+import Navbar from "./Nav";
+let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
 
 function Home() {
   const role = localStorage.getItem("role");
-  const [filteredEmployees, setFilteredEmployees] = useState(employees);
+  const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
 
-  const handleFilter = (location, sortOrder) => {
-    let filteredList = employees;
+  useEffect(() => {
+    getEmployees();
+  }, []);
 
-    // Filter employees based on location
-    if (location) {
-      filteredList = employees.filter(
-        (employee) => employee.location === location
-      );
+  const getEmployees = async () => {
+    try {
+      const authToken = localStorage.getItem("token");
+
+      const response = await fetch(`${BASEURL}/auth/getAllEmploy`, {
+        method: "GET",
+        headers: {
+          Authorization: authToken,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setEmployees(data.employees);
+        setFilteredEmployees(data.employees); // Initially set filtered employees to all employees
+      } else {
+        console.error("Failed to fetch employees");
+      }
+    } catch (error) {
+      console.error("Error fetching employees:", error);
     }
-
-    // Sort employees based on sort order
-    if (sortOrder === "asc") {
-      filteredList.sort((a, b) => a.name.localeCompare(b.name));
-    } else {
-      filteredList.sort((a, b) => b.name.localeCompare(a.name));
-    }
-
-    setFilteredEmployees(filteredList);
   };
+
+  const handleFilter = async (location, sortOrder) => {
+    try {
+      const authToken = localStorage.getItem("token");
+
+      let filterUrl = `${BASEURL}/auth/filter-employ`;
+      if (location || sortOrder) {
+        filterUrl += `?location=${location}&sort=${sortOrder}`;
+      }
+
+      const response = await fetch(filterUrl, {
+        method: "GET",
+        headers: {
+          Authorization: authToken,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFilteredEmployees(data.employees);
+      } else {
+        console.error("Failed to fetch filtered employees");
+      }
+    } catch (error) {
+      console.error("Error filtering employees:", error);
+    }
+  };
+
   return (
     <div>
-      <h1>Home Page</h1>
+      <Navbar/>
       <div className="content">
         {role === "manager" && <CreateDepartment />}
         <EmployeeFilter employees={employees} onFilter={handleFilter} />
-        <EmployeeList employees={filteredEmployees} />
+        <EmployeeList employees={filteredEmployees} getEmployee = {getEmployees} />
       </div>
     </div>
   );

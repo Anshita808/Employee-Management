@@ -18,13 +18,13 @@ manaerRoute.get(
   managerController.getAllDepartments
 );
 manaerRoute.put(
-  "/update-department",
+  "/update-department/:id",
   auth,
   isManager,
   managerController.updateDepartment
 );
 manaerRoute.delete(
-  "/delete-department",
+  "/delete-department/:id",
   auth,
   isManager,
   managerController.deleteDepartment
