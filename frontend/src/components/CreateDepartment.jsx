@@ -1,5 +1,3 @@
-// CreateDepartment.jsx
-
 import React, { useState, useEffect } from "react";
 
 let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
@@ -7,6 +5,9 @@ let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
 function CreateDepartment() {
   const [dept, setDept] = useState("");
   const [departments, setDepartments] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
 
   useEffect(() => {
     fetchDepartments();
@@ -121,6 +122,41 @@ function CreateDepartment() {
     }
   };
 
+  const handleAssignDepartment = (departmentId) => {
+    setSelectedDepartmentId(departmentId);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedDepartmentId(""); // Reset selected department ID
+    setShowModal(false);
+  };
+
+  const handleSubmitModal = async (e) => {
+    e.preventDefault();
+    console.log(employeeId, selectedDepartmentId);
+    try {
+      const authToken = localStorage.getItem("token");
+      const response = await fetch(
+        `${BASEURL}/manager/assign-department/${employeeId}/${selectedDepartmentId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: authToken,
+          },
+        }
+      );
+      if (response.ok) {
+        alert("Department assigned successfully");
+        setShowModal(false);
+      } else {
+        alert("Failed to assign department");
+      }
+    } catch (error) {
+      console.error("Error assigning department:", error);
+    }
+  };
+
   return (
     <>
       <form onSubmit={handleSubmitDept}>
@@ -137,6 +173,9 @@ function CreateDepartment() {
           <div key={department._id} className="department-card">
             <p>{department.name}</p>
             <div className="buttons">
+              <button onClick={() => handleAssignDepartment(department._id)}>
+                Assign Department
+              </button>
               <button
                 onClick={() =>
                   handleUpdateDept(
@@ -154,6 +193,24 @@ function CreateDepartment() {
           </div>
         ))}
       </div>
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleCloseModal}>
+              &times;
+            </span>
+            <form onSubmit={handleSubmitModal}>
+              <input
+                type="text"
+                placeholder="Enter Employee ID"
+                value={employeeId}
+                onChange={(e) => setEmployeeId(e.target.value)}
+              />
+              <input type="submit" value="Assign Department" />
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
