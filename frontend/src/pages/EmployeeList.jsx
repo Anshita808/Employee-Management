@@ -24,6 +24,7 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
         const updatedEmployee = await res.json();
         console.log(updatedEmployee);
         alert("Employee Updated");
+        getEmployee()
         setEditableFields((prevFields) => ({
           ...prevFields,
           [id]: {}, // Clear editable fields for the updated employee
