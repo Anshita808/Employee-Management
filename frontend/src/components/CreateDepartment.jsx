@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
+let BASEURL = "https://chartreuse-green-top-hat.cyclic.app";
 
-function CreateDepartment() {
+function CreateDepartment({ getEmployee }) {
   const [dept, setDept] = useState("");
   const [departments, setDepartments] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -16,15 +16,12 @@ function CreateDepartment() {
   const fetchDepartments = async () => {
     try {
       const authToken = localStorage.getItem("token");
-      const response = await fetch(
-        `${BASEURL}/manager/get-department`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: authToken,
-          },
-        }
-      );
+      const response = await fetch(`${BASEURL}/manager/get-department`, {
+        method: "GET",
+        headers: {
+          Authorization: authToken,
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -42,17 +39,14 @@ function CreateDepartment() {
 
     try {
       const authToken = localStorage.getItem("token");
-      const response = await fetch(
-        `${BASEURL}/manager/create-department`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authToken,
-          },
-          body: JSON.stringify({ name: dept }),
-        }
-      );
+      const response = await fetch(`${BASEURL}/manager/create-department`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authToken,
+        },
+        body: JSON.stringify({ name: dept }),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -148,6 +142,7 @@ function CreateDepartment() {
       );
       if (response.ok) {
         alert("Department assigned successfully");
+        getEmployee();
         setShowModal(false);
       } else {
         alert("Failed to assign department");

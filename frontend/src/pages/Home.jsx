@@ -1,10 +1,10 @@
-// Home.jsx
 import React, { useState, useEffect } from "react";
 import CreateDepartment from "../components/CreateDepartment";
 import EmployeeFilter from "./EmployeeFilter";
 import EmployeeList from "./EmployeeList";
 import Navbar from "./Nav";
-let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
+
+let BASEURL = "https://chartreuse-green-top-hat.cyclic.app";
 
 function Home() {
   const role = localStorage.getItem("role");
@@ -28,7 +28,7 @@ function Home() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+
         setEmployees(data.employees);
         setFilteredEmployees(data.employees); // Initially set filtered employees to all employees
       } else {
@@ -45,7 +45,10 @@ function Home() {
 
       let filterUrl = `${BASEURL}/auth/filter-employ`;
       if (location || sortOrder) {
-        filterUrl += `?location=${location}&sort=${sortOrder}`;
+        filterUrl += `?location=${location}`;
+        if (sortOrder) {
+          filterUrl += `&sort=${sortOrder}`;
+        }
       }
 
       const response = await fetch(filterUrl, {
@@ -66,13 +69,24 @@ function Home() {
     }
   };
 
+  const handleEmployeeUpdate = (updatedEmployee) => {
+    const updatedEmployees = employees.map((employee) =>
+      employee._id === updatedEmployee._id ? updatedEmployee : employee
+    );
+    setEmployees(updatedEmployees);
+  };
+
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className="content">
-        {role === "manager" && <CreateDepartment />}
+        {role === "manager" && <CreateDepartment getEmployee={getEmployees} />}
         <EmployeeFilter employees={employees} onFilter={handleFilter} />
-        <EmployeeList employees={filteredEmployees} getEmployee = {getEmployees} />
+        <EmployeeList
+          employees={filteredEmployees}
+          onUpdate={handleEmployeeUpdate}
+          getEmployee={getEmployees}
+        />
       </div>
     </div>
   );

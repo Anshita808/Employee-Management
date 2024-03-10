@@ -1,20 +1,25 @@
-// EmployeeFilter.jsx
-
 import React, { useState } from "react";
 
 function EmployeeFilter({ employees, onFilter }) {
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState("all");
 
   const handleLocationChange = (event) => {
-    setSelectedLocation(event.target.value);
-    onFilter(event.target.value, sortOrder);
+    const location = event.target.value;
+    setSelectedLocation(location);
+    onFilter(location, sortOrder); // Call onFilter with updated location and sort order
   };
 
   const handleSortChange = (event) => {
-    setSortOrder(event.target.value);
-    onFilter(selectedLocation, event.target.value);
+    const order = event.target.value;
+    setSortOrder(order);
+    onFilter(selectedLocation, order); // Call onFilter with updated location and sort order
   };
+
+  // Extract unique locations from employees for filtering
+  const uniqueLocations = Array.from(
+    new Set(employees.map((employee) => employee.location))
+  );
 
   return (
     <div className="employee-filter">
@@ -27,15 +32,15 @@ function EmployeeFilter({ employees, onFilter }) {
           onChange={handleLocationChange}
         >
           <option value="">All Locations</option>
-          {/* Assuming locations are dynamically populated */}
-          {employees.map((employee) => (
-            <option key={employee._id} value={employee.location}>
-              {employee.location}
+          {uniqueLocations.map((location) => (
+            <option key={location} value={location}>
+              {location}
             </option>
           ))}
         </select>
         <label htmlFor="nameSort">Sort by Name:</label>
         <select id="nameSort" value={sortOrder} onChange={handleSortChange}>
+          <option value="all">Select</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-
-let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
+let BASEURL = "https://chartreuse-green-top-hat.cyclic.app";
 
 function EmployeeList({ employees, onUpdate, getEmployee }) {
   const [editableFields, setEditableFields] = useState({});
@@ -8,21 +7,17 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
 
   const handleUpdate = async (id) => {
     try {
-      const res = await fetch(
-        `${BASEURL}/auth/update-employ/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
-          },
-          body: JSON.stringify(editableFields[id] || {}),
-        }
-      );
+      const res = await fetch(`${BASEURL}/auth/update-employ/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(editableFields[id] || {}),
+      });
 
       if (res.status === 200) {
         const updatedEmployee = await res.json();
-        console.log(updatedEmployee);
         alert("Employee Updated");
         setEditableFields((prevFields) => ({
           ...prevFields,
@@ -33,9 +28,8 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
           ...prevEditing,
           [id]: false, // Exit editing mode for the updated employee
         }));
-        getEmployee()
+        getEmployee();
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -43,16 +37,13 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(
-        `${BASEURL}/auth/delete-employ/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await fetch(`${BASEURL}/auth/delete-employ/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      });
 
       if (res.status === 200) {
         alert("Employee Deleted");
@@ -76,7 +67,7 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
   const startEditing = (id) => {
     setIsEditing((prevEditing) => ({
       ...prevEditing,
-      [id]: true, // Set editing mode for the selected employee
+      [id]: !prevEditing[id], // Toggle editing mode for the selected employee
     }));
   };
 
@@ -102,7 +93,7 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
                 {isEditing[employee._id] ? (
                   <input
                     type="text"
-                    value={editableFields[employee._id]?.name || employee.name}
+                    value={editableFields[employee._id]?.name || ""}
                     onChange={(e) =>
                       handleFieldChange(employee._id, "name", e.target.value)
                     }
@@ -115,7 +106,7 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
                 {isEditing[employee._id] ? (
                   <input
                     type="text"
-                    value={editableFields[employee._id]?.role || employee.role}
+                    value={editableFields[employee._id]?.role || ""}
                     onChange={(e) =>
                       handleFieldChange(employee._id, "role", e.target.value)
                     }
@@ -124,14 +115,14 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
                   employee.role
                 )}
               </td>
-              <td>{employee?.department?employee.department.name : "Unassigned"}</td>
+              <td>
+                {employee?.department ? employee.department.name : "Unassigned"}
+              </td>
               <td>
                 {isEditing[employee._id] ? (
                   <input
                     type="text"
-                    value={
-                      editableFields[employee._id]?.location || employee.location
-                    }
+                    value={editableFields[employee._id]?.location || ""}
                     onChange={(e) =>
                       handleFieldChange(
                         employee._id,
@@ -146,11 +137,17 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
               </td>
               <td>
                 {isEditing[employee._id] ? (
-                  <button onClick={() => handleUpdate(employee._id)}>Save</button>
+                  <button onClick={() => handleUpdate(employee._id)}>
+                    Save
+                  </button>
                 ) : (
-                  <button onClick={() => startEditing(employee._id)}>Update</button>
+                  <button onClick={() => startEditing(employee._id)}>
+                    Update
+                  </button>
                 )}
-                <button onClick={() => handleDelete(employee._id)}>Delete</button>
+                <button onClick={() => handleDelete(employee._id)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
