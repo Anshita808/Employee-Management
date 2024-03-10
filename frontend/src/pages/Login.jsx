@@ -1,15 +1,18 @@
 // Login.js
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-let BASEURL = "https://chartreuse-green-top-hat.cyclic.app"
+import { AuthContext } from "../components/userContext";
+
+let BASEURL = "https://chartreuse-green-top-hat.cyclic.app";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setVerifiedToken } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +26,7 @@ const Login = () => {
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.isUserExists.role);
+        setVerifiedToken(response.data.token);
         toast.success("Login successful!");
 
         navigate("/");

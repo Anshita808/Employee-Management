@@ -1,25 +1,24 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
+import React, { useContext } from "react";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { AuthContext } from "./components/userContext";
 import "./App.css";
+import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 
 function App() {
-  // Check if the user is authenticated based on token presence
-  
-
+  const { isAuth } = useContext(AuthContext);
+  console.log(isAuth);
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-        <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/"
-            element={ <Home />}
+            element={isAuth ? <Home /> : <Navigate to="/login" />}
           />
-          
-          <Route path="/register" element={<Register />} />
-          {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Routes>
       </BrowserRouter>
     </div>

@@ -52,7 +52,7 @@ function CreateDepartment({ getEmployee }) {
         const data = await response.json();
         console.log(data);
         setDepartments([...departments, data.department]);
-        setDept("");
+        setDept(""); // Clear the input field
         console.log("Department created:", data.department);
       } else {
         console.error("Failed to create department");
@@ -109,7 +109,7 @@ function CreateDepartment({ getEmployee }) {
           )
         );
         console.log("Department updated");
-        getEmployee()
+        getEmployee();
       } else {
         console.error("Failed to update department");
       }
@@ -144,6 +144,7 @@ function CreateDepartment({ getEmployee }) {
       );
       if (response.ok) {
         alert("Department assigned successfully");
+        setEmployeeId(""); // Clear the input field
         getEmployee();
         setShowModal(false);
       } else {
@@ -191,23 +192,24 @@ function CreateDepartment({ getEmployee }) {
         ))}
       </div>
       {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={handleCloseModal}>
-              &times;
-            </span>
-            <form onSubmit={handleSubmitModal}>
-              <input
-                type="text"
-                placeholder="Enter Employee ID"
-                value={employeeId}
-                onChange={(e) => setEmployeeId(e.target.value)}
-              />
-              <input type="submit" value="Assign Department" />
-            </form>
-          </div>
-        </div>
-      )}
+  <div className="modal">
+    <div className="modal-content">
+      <span className="close-icon" onClick={handleCloseModal}>
+        &times;
+      </span>
+      <form onSubmit={handleSubmitModal}>
+        <input
+          type="text"
+          placeholder="Enter Employee ID"
+          value={employeeId}
+          onChange={(e) => setEmployeeId(e.target.value)}
+        />
+        <input type="submit" value="Assign Department" />
+      </form>
+    </div>
+  </div>
+)}
+
     </>
   );
 }
