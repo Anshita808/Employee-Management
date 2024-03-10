@@ -78,6 +78,7 @@ function CreateDepartment({ getEmployee }) {
       if (response.ok) {
         setDepartments(departments.filter((_, i) => i !== index));
         console.log("Department deleted");
+        getEmployee();
       } else {
         console.error("Failed to delete department");
       }
@@ -108,6 +109,7 @@ function CreateDepartment({ getEmployee }) {
           )
         );
         console.log("Department updated");
+        getEmployee()
       } else {
         console.error("Failed to update department");
       }
