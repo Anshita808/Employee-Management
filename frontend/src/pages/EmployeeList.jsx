@@ -4,6 +4,7 @@ let BASEURL = "https://chartreuse-green-top-hat.cyclic.app";
 function EmployeeList({ employees, onUpdate, getEmployee }) {
   const [editableFields, setEditableFields] = useState({});
   const [isEditing, setIsEditing] = useState({});
+  const userRole = localStorage.getItem("role");
 
   const handleUpdate = async (id) => {
     try {
@@ -82,7 +83,7 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
             <th>Role</th>
             <th>Department</th>
             <th>Location</th>
-            <th>Actions</th>
+            {!userRole || userRole !== "employee" && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -135,20 +136,26 @@ function EmployeeList({ employees, onUpdate, getEmployee }) {
                   employee.location
                 )}
               </td>
+              {!userRole || userRole !== "employee" &&
               <td>
-                {isEditing[employee._id] ? (
-                  <button onClick={() => handleUpdate(employee._id)}>
-                    Save
-                  </button>
-                ) : (
-                  <button onClick={() => startEditing(employee._id)}>
-                    Update
-                  </button>
+                {userRole !== "employee" && (
+                  <>
+                    {isEditing[employee._id] ? (
+                      <button onClick={() => handleUpdate(employee._id)}>
+                        Save
+                      </button>
+                    ) : (
+                      <button onClick={() => startEditing(employee._id)}>
+                        Update
+                      </button>
+                    )}
+                    <button onClick={() => handleDelete(employee._id)}>
+                      Delete
+                    </button>
+                  </>
                 )}
-                <button onClick={() => handleDelete(employee._id)}>
-                  Delete
-                </button>
               </td>
+}
             </tr>
           ))}
         </tbody>
